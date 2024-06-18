@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import ContactForm from './components/ContactForm/ContactForm'
 import SearchBox from './components/SearchBox/SearchBox'
@@ -12,13 +12,27 @@ function App() {
   {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
   ])
 
+ const [filteredContacts, setFilteredContacts] = useState(contacts);
+
+  const [value, setValue] = useState('')
+
+  const handleInput = (e) => {
+    setValue(e.target.value);
+  }
+
+  useEffect(() => {
+    setFilteredContacts(contacts.filter(contact =>
+      contact.name.toLowerCase().includes(value.toLowerCase())
+    ));
+  }, [contacts, value])
+
   return (
     <>
       <div>
         <h1>Phonebook</h1>
         <ContactForm />
-        <SearchBox />
-        <ContactList contactList={contacts} />
+        <SearchBox value={value} handleInput={handleInput} />
+        <ContactList contactList={filteredContacts} />
       </div>
 
     </>

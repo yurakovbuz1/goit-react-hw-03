@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.inputField {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 2px;
+  height: 30px;
+  width: 98%;
+  color: black;
+}

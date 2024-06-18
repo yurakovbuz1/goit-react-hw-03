@@ -8,7 +8,7 @@ const Contact = ({ name, number }) => {
                     <p>{name}</p>
                     <p>{number}</p>
                 </div>
-                <button type='button'>Delete</button>
+                <button className={css.deleteButton} type='button'>Delete</button>
             </div>
             
         </>
