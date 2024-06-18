@@ -3,6 +3,7 @@ import './App.css'
 import ContactForm from './components/ContactForm/ContactForm'
 import SearchBox from './components/SearchBox/SearchBox'
 import ContactList from './components/ContactList/ContactList'
+import * as Yup from 'yup'
 
 function App() {
   const [contacts, setContacts] = useState([
@@ -16,23 +17,38 @@ function App() {
 
   const [value, setValue] = useState('')
 
-  const handleInput = (e) => {
+  const handleSearchInput = (e) => {
     setValue(e.target.value);
   }
-
+  
   useEffect(() => {
     setFilteredContacts(contacts.filter(contact =>
       contact.name.toLowerCase().includes(value.toLowerCase())
     ));
   }, [contacts, value])
 
+  const handleFormInput = (contact) => {
+    console.log('contact :>> ', contact);
+    setContacts([...contacts, contact]);
+  }
+
+   const handleOnDelete = (contactId) => {
+    setContacts((prevContacts) => prevContacts.filter((contact) => contact.id !== contactId)
+    );
+  };
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().min(3, 'Minimum number of digits is 3').max(50, 'Maximum number of digits is 50').required('This field is required'),
+    number: Yup.string().min(3, 'Minimum number of digits is 3').max(50, 'Maximum number of digits is 50').required('This field is required'),
+  })
+
   return (
     <>
       <div>
         <h1>Phonebook</h1>
-        <ContactForm />
-        <SearchBox value={value} handleInput={handleInput} />
-        <ContactList contactList={filteredContacts} />
+        <ContactForm validationSchema={validationSchema} handleFormInput={handleFormInput} />
+        <SearchBox value={value} handleInput={handleSearchInput} />
+        <ContactList contactList={filteredContacts} handleDelete={handleOnDelete} />
       </div>
 
     </>
